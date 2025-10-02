@@ -1,0 +1,29 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - htpasswd:
+      fileData:
+        name: htpass-secret
+    mappingMethod: claim
+    name: Htpasswd
+    type: HTPasswd
+  - name: EntraID
+    mappingMethod: claim
+    type: OpenID
+    openID:
+      clientID: 3a3cc7b7-2639-499a-b748-88b1c44fe374
+      clientSecret:
+        name: secret-entraid
+      claims:
+        preferredUsername:
+        - email
+        name:
+        - name
+        email:
+        - email
+        groups:
+        - groups
+      issuer: https://login.microsoftonline.com/662ce8bb-85db-4ba2-ba98-be222318b83e/v2.0
