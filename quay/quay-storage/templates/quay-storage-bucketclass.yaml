@@ -1,0 +1,21 @@
+{{- range $bucketClass := .Values.bucketClass }}
+apiVersion: noobaa.io/v1alpha1
+kind: BucketClass
+metadata:
+  name: {{ $bucketClass.name }}
+  namespace: {{ default "openshift-storage" $.Values.namespace }}
+  labels:
+    app: noobaa
+spec:
+  placementPolicy:
+    tiers:
+      - backingStores:
+        {{- range $store := $bucketClass.backingStores }}
+        - {{ $store }}
+        {{- end }}
+        {{- if $bucketClass.placement }}
+        placement: {{ $bucketClass.placement }}
+        {{- else }}
+        placement: {{ if ge (len $bucketClass.backingStores) 2 }}Mirror{{ else }}Spread{{ end }}
+        {{- end }}
+{{- end }}

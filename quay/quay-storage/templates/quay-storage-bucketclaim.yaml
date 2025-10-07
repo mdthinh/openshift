@@ -1,0 +1,17 @@
+{{- range $bucketClaim := .Values.bucketClaim }}
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: {{ $bucketClaim.name }}
+  namespace: {{ default "openshift-storage" $.Values.namespace }}
+  labels:
+    app: noobaa
+    bucket-provisioner: "{{ default "openshift-storage.noobaa.io" $bucketClaim.storageClassName }}-obc"
+    noobaa-domain: "{{ default "openshift-storage" $.Values.namespace }}.noobaa.io"
+spec:
+  additionalConfig:
+    bucketclass: {{ $bucketClaim.bucketClass }}
+  generateBucketName: {{ $bucketClaim.name }}
+  objectBucketName: "obc-openshift-storage-{{ $bucketClaim.name }}"
+  storageClassName: {{ default "openshift-storage.noobaa.io" $bucketClaim.storageClassName }}
+{{- end }}

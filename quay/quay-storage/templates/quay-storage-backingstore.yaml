@@ -1,0 +1,19 @@
+{{- range $backingStore := .Values.backingStores }}
+---
+apiVersion: noobaa.io/v1alpha1
+kind: BackingStore
+metadata:
+  name: {{ $backingStore.name }}
+  namespace: {{ default "openshift-storage" $.Values.namespace }}
+  labels:
+    app: noobaa
+spec:
+  type: pv-pool
+  pvPool:
+    numVolumes: {{ $backingStore.numVolumes }}
+    resources:
+      requests:
+        storage: {{ $backingStore.storage }}
+    secret: {}
+    storageClass: {{ $backingStore.storageClass }}
+{{- end }}

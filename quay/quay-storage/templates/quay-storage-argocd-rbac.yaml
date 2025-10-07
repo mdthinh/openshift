@@ -1,0 +1,29 @@
+{{- if .Values.argoCD_rbac.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-noobaa-role
+  namespace: {{ default "openshift-storage" $.Values.namespace }}
+rules:
+  - apiGroups: ["noobaa.io"]
+    resources: ["backingstores", "bucketclasses"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["objectbucket.io"]
+    resources: ["objectbucketclaims"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-noobaa-rolebinding
+  namespace: {{ default "openshift-storage" $.Values.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.argoCD_rbac.serviceAccount.name }}
+    namespace: {{ .Values.argoCD_rbac.serviceAccount.namespace }}
+roleRef:
+  kind: Role
+  name: argocd-noobaa-role
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

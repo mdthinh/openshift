@@ -1,0 +1,7 @@
+apiVersion: v2
+name: noobaa-bucket
+version: 0.1.0
+description: Chart to create noobaa object storage. Current only for backingStores type pv-pool 
+maintainers:
+  - name: Platform Team
+appVersion: "1.0.0"

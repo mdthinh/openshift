@@ -1,0 +1,29 @@
+namespace: openshift-storage
+
+backingStores:
+  - name: quay-backingstore
+    storageClass: ocs-storagecluster-ceph-rbd
+    storage: 300Gi
+    numVolumes: 1
+  - name: quay-backingstore-mirror
+    storageClass: ocs-storagecluster-ceph-rbd
+    storage: 300Gi
+    numVolumes: 1
+
+bucketClass:
+  - name: quay-bucketclass
+    # placement is optional. If specified, it must be either "Mirror" or "Spread"
+    placement: Mirror
+    backingStores:
+      - quay-backingstore
+      - quay-backingstore-mirror
+
+bucketClaim:
+  - name: quay-bucket
+    bucketClass: quay-bucketclass
+    
+argoCD_rbac:
+  enabled: true
+  serviceAccount:
+    name: openshift-gitops-argocd-application-controller
+    namespace: openshift-gitops
