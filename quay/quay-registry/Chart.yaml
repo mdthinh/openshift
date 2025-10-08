@@ -1,0 +1,4 @@
+apiVersion: v2
+name: quay-demo
+version: 0.1.0
+description: Chart to create quay with operator

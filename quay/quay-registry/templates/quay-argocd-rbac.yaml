@@ -1,0 +1,31 @@
+{{- if .Values.argoCD_role.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-quay-role
+  namespace: {{ .Values.installOperator.namespace }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  - apiGroups: ["quay.redhat.com"]
+    resources: ["quayregistries"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-quay-rolebinding
+  namespace: {{ .Values.installOperator.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.argoCD_role.serviceAccountName }}
+    namespace: {{ .Values.argoCD_role.serviceAccountNamespace }}
+roleRef:
+  kind: Role
+  name: argocd-quay-role
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

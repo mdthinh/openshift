@@ -1,0 +1,98 @@
+namespace: quay-enterprise
+
+installOperator:
+  enabled: true
+  name: quay-operator
+  namespace: quay-enterprise
+  channel: stable-3.15
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  version: v3.15.2
+
+quayRegistry:
+  components:
+    - managed: true
+      kind: clair
+    - managed: true
+      kind: postgres
+    - managed: false
+      kind: objectstorage
+    - managed: true
+      kind: redis
+    - managed: false
+      kind: horizontalpodautoscaler
+    - managed: true
+      kind: route
+    - managed: false
+      kind: mirror
+    - managed: false
+      kind: monitoring
+    - managed: true
+      kind: tls
+    - managed: true
+      kind: quay
+    - managed: true
+      kind: clairpostgres
+
+objectStorage:
+  bucket_name: quay-bucket-32c6fb6a-bc9a-4faa-b8b1-a469d53f307b
+  access_key: U205ejIwSHlqUVpyWU1qMjRGdFQ= #base64
+  secret_key: MnNkdk5rYzRPMlZ2cWlGc1JuWFNlcmN2UGdEbXMvaTBzdnJ1bkdkMA== #base64
+  hostname: s3.openshift-storage.svc
+  is_secure: true
+  port: "443"
+  storage_path: /datastorage/registry
+
+azureAuth:
+  type: Database
+  client_id: "5d69f2cc-cd20-4613-a338-bbb745dbda5e"
+  client_secret: "RDZnOFF+ZHdJSExZSWFSQmxlOWMyZX5oSlloRXhpbmhoRWRzamNzdg==" #base64
+  oidc_server: "https://login.microsoftonline.com/f46345aa-4fa0-4d1e-bc2c-aa469179a252/v2.0/"
+  service_name: "EntraID"
+
+configTemplate: |-
+  SERVER_HOSTNAME: quay.apps.prod-ocp.viettechcorp.com.vn
+  PREFERRED_URL_SCHEME: https
+  SUPER_USERS:
+    - admin
+  FEATURE_USER_INITIALIZE: true
+  DATABASE_SECRET_KEY: "70c3df2a4e87923f0dec232328a05659823e842d85c529e03ad5824cfdf8de20"
+  REDIS_HOSTNAME: redis
+  FEATURE_USER_CREATION: true
+  FEATURE_UI_V2: true
+  FEATURE_REPO_MIRROR: true
+  USER_EVENTS_CONFIG:
+    enabled: true
+
+  DISTRIBUTED_STORAGE_CONFIG:
+    default:
+      - RHOCSStorage
+      - access_key: {{ .Values.objectStorage.access_key | b64dec }}
+        bucket_name: {{ .Values.objectStorage.bucket_name }}
+        hostname: {{ .Values.objectStorage.hostname }}
+        is_secure: {{ .Values.objectStorage.is_secure }}
+        port: "{{ .Values.objectStorage.port }}"
+        secret_key: {{ .Values.objectStorage.secret_key | b64dec }}
+        storage_path: {{ .Values.objectStorage.storage_path }}
+  DISTRIBUTED_STORAGE_DEFAULT_LOCATIONS: []
+  DISTRIBUTED_STORAGE_PREFERENCE:
+    - default
+
+  AUTHENTICATION_TYPE: {{ .Values.azureAuth.type }}
+  AZURE_LOGIN_CONFIG:
+    CLIENT_ID: {{ .Values.azureAuth.client_id | b64dec | quote }}
+    CLIENT_SECRET: {{ .Values.azureAuth.client_secret | b64dec | quote }}
+    OIDC_SERVER: {{ .Values.azureAuth.oidc_server | quote }}
+    SERVICE_NAME: {{ .Values.azureAuth.service_name | quote }}
+    LOGIN_SCOPES:
+      - openid
+      - email
+      - profile
+    PREFERRED_USERNAME_CLAIM_NAME: email
+    VERIFIED_EMAIL_CLAIM_NAME: email
+    PREFERRED_GROUP_CLAIM_NAME: groups
+
+argoCD_role:
+  enabled: true
+  serviceAccountName: openshift-gitops-argocd-application-controller
+  serviceAccountNamespace: openshift-gitops

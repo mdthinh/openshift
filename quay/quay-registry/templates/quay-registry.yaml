@@ -1,0 +1,8 @@
+apiVersion: quay.redhat.com/v1
+kind: QuayRegistry
+metadata:
+  name: quay
+  namespace: {{ default .Release.Namespace .Values.namespace }}
+spec:
+  configBundleSecret: config-bundle-secret
+  components: {{ toYaml .Values.quayRegistry.components | nindent 4 }}
