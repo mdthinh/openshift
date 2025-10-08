@@ -86,7 +86,7 @@ FEATURE_USER_CREATION: true
 AUTHENTICATION_TYPE: Database
 AZURE_LOGIN_CONFIG:
     CLIENT_ID: "937c0fec-97f2-4ecc-86ad-753746b6388e"
-    CLIENT_SECRET: "b~48Q~9hAz8mvLehFR7kNbinfwvQvRFa-pD3cazH"
+    client_secret: "RDZnOFF+ZHdJSExZSWFSQmxlOWMyZX5oSlloRXhpbmhoRWRzamNzdg==" #base64
     OIDC_SERVER: https://login.microsoftonline.com/e69dc0dd-5fc0-4729-b9ac-30c9100ed271/v2.0/
     SERVICE_NAME: EntraID  
 ```
