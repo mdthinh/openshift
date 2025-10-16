@@ -3,11 +3,11 @@ namespace: openshift-storage
 backingStores:
   - name: quay-backingstore
     storageClass: ocs-storagecluster-ceph-rbd
-    storage: 300Gi
+    storage: 50Gi
     numVolumes: 1
   - name: quay-backingstore-mirror
     storageClass: ocs-storagecluster-ceph-rbd
-    storage: 300Gi
+    storage: 50Gi
     numVolumes: 1
 
 bucketClass:
