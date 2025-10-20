@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: acm
+spec:
+  destination:
+    namespace: open-cluster-management
+    server: https://kubernetes.default.svc
+  source:
+    path: acm
+    repoURL: https://github.com/mdthinh/openshift.git
+    targetRevision: HEAD
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - Validate=false
+      - PruneLast=true
+      - CreateNamespace=true

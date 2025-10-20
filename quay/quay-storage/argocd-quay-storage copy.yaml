@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: quay-storage
+spec:
+  destination:
+    namespace: openshift-storage
+    server: https://kubernetes.default.svc
+  source:
+    path: quay/quay-storage
+    repoURL: https://github.com/mdthinh/openshift.git
+    targetRevision: HEAD
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - Validate=false
+      - PruneLast=true
+      - CreateNamespace=true

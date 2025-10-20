@@ -14,7 +14,7 @@ spec:
     mappingMethod: claim
     type: OpenID
     openID:
-      clientID: 3a3cc7b7-2639-499a-b748-88b1c44fe374
+      clientID: 5d69f2cc-cd20-4613-a338-bbb745dbda5e
       clientSecret:
         name: secret-entraid
       claims:
@@ -26,4 +26,4 @@ spec:
         - email
         groups:
         - groups
-      issuer: https://login.microsoftonline.com/662ce8bb-85db-4ba2-ba98-be222318b83e/v2.0
+      issuer: https://login.microsoftonline.com/f46345aa-4fa0-4d1e-bc2c-aa469179a252/v2.0

@@ -7,4 +7,4 @@ metadata:
   namespace: openshift-authentication
 type: Opaque
 data:
-  htpasswd: c3FhYWRtaW46JDJ5JDA1JEhaempBNUU4OVZBcDFnWWVuRXhvcWU1SkE1YUJ1UGNrVkg4Uk0xWVNkaW43Nm1iQXE1Y2lt
+  htpasswd: YWRtaW46JDJ5JDA1JFhVUXV4ZWs5b1JSZ0g5QTJYNXJ0Z2VieHJ0bENFYmNwdk9WaUV4WEVnb095bS93U0VJckR1
