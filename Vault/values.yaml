@@ -25,7 +25,7 @@ global:
   externalVaultAddr: ""
 
   # If deploying to OpenShift
-  openshift: false
+  openshift: true
 
   # Create PodSecurityPolicy for pods
   psp:
@@ -881,7 +881,7 @@ server:
   # Helm project by default.  It is possible to manually configure Vault to use a
   # different HA backend.
   ha:
-    enabled: false
+    enabled: true
     replicas: 3
 
     # Set the api_addr configuration for Vault HA
@@ -901,7 +901,7 @@ server:
     raft:
 
       # Enables Raft integrated storage
-      enabled: false
+      enabled: true
       # Set the Node Raft ID to the name of the pod
       setNodeId: false
 
