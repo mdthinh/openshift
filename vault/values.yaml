@@ -514,7 +514,7 @@ server:
     enabled: true
     # If you need to use a http path instead of the default exec
     # path: /v1/sys/health?standbyok=true
-    path: "/v1/sys/health?uninitcode=204"
+    path: "/v1/sys/health?standbyok=true&uninitcode=204"
     # Port number on which readinessProbe will be checked.
     port: 8200
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
