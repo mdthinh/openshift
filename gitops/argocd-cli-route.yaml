@@ -1,0 +1,20 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: argocd-cli
+  namespace: openshift-gitops
+  labels:
+    app.kubernetes.io/name: openshift-gitops-server
+spec:
+  host: argocd-cli.apps.prod-ocp.viettechcorp.com.vn
+  to:
+    kind: Service
+    name: openshift-gitops-server
+    weight: 100
+  port:
+    targetPort: https
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
+
