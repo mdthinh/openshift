@@ -1,0 +1,84 @@
+{{- if .Values.argocdRbac.enabled }}
+
+{{- $saName := .Values.argocdRbac.saName -}}
+{{- $saNs := .Values.argocdRbac.saNamespace -}}
+{{- $ns := .Values.argocdRbac.targetNamespace -}}
+
+{{- if .Values.argocdRbac.createNamespace }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $ns }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+---
+{{- end }}
+
+# 1) Quyền admin trong namespace target cho SA ArgoCD
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-admin-in-{{ $ns }}
+  namespace: {{ $ns }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+subjects:
+  - kind: ServiceAccount
+    name: {{ $saName }}
+    namespace: {{ $saNs }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+{{- if .Values.argocdRbac.clusterAdmin }}
+
+# 2a) (Tuỳ chọn) Cấp full cluster-admin cho SA ArgoCD
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-cluster-admin
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+subjects:
+  - kind: ServiceAccount
+    name: {{ $saName }}
+    namespace: {{ $saNs }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+
+{{- else }}
+
+# 2b) (Khuyên dùng) Cấp quyền tối thiểu để quản lý Webhook Configs cho injector
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-vault-webhook-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+rules:
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources:
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+    verbs: ["get","list","watch","create","update","patch","delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-vault-webhook-manager-binding
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+subjects:
+  - kind: ServiceAccount
+    name: {{ $saName }}
+    namespace: {{ $saNs }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argocd-vault-webhook-manager
+
+{{- end }}
+{{- end }}

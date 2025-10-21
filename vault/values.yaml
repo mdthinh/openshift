@@ -1373,3 +1373,21 @@ serverTelemetry:
       #    for: 5m
       #    labels:
       #      severity: critical
+argocdRbac:
+  enabled: true
+
+  # SA của Argo CD
+  saName: openshift-gitops-argocd-application-controller
+  saNamespace: openshift-gitops
+
+  # Namespace mà ArgoCD cần quyền để deploy Vault
+  targetNamespace: vault
+
+  # Tạo trước namespace (nếu chưa có)
+  createNamespace: true
+
+  # Chọn kiểu cấp quyền cluster:
+  # - clusterAdmin: true  => bind thẳng cluster-admin (dễ nhưng rộng quyền)
+  # - clusterAdmin: false => chỉ cấp tối thiểu cho webhook (khuyên dùng)
+  clusterAdmin: false
+
