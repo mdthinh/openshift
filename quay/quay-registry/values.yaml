@@ -35,9 +35,9 @@ quayRegistry:
       kind: clairpostgres
 
 objectStorage:
-  bucket_name: quay-bucket-32c6fb6a-bc9a-4faa-b8b1-a469d53f307b
-  access_key: U205ejIwSHlqUVpyWU1qMjRGdFQ= #base64
-  secret_key: MnNkdk5rYzRPMlZ2cWlGc1JuWFNlcmN2UGdEbXMvaTBzdnJ1bkdkMA== #base64
+  bucket_name: quay-bucket-7546622a-6ecf-4529-8470-31b8f7aab197
+  access_key: VE5SRm01WlRoeGVjZms3ZnloYms= #base64
+  secret_key: Mjd3ZzZyelM4K1NwL21mVDFkblRSN3BwQkxTUGpLU0Rkc1RUOXhmcA== #base64
   hostname: s3.openshift-storage.svc
   is_secure: true
   port: "443"

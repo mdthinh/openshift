@@ -1,4 +1,3 @@
-# (1) QUYỀN CLUSTER HIỆN CÓ - GIỮ NGUYÊN
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -21,7 +20,6 @@ roleRef:
   kind: ClusterRole
   name: multiclusterhub-admin
 ---
-# (2) QUYỀN NAMESPACE ĐỂ ARGOCD QUẢN LÝ APPLICATION TRONG open-cluster-management
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
