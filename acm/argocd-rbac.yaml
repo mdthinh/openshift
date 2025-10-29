@@ -1,3 +1,4 @@
+# (1) QUYỀN CLUSTER HIỆN CÓ - GIỮ NGUYÊN
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -16,6 +17,42 @@ subjects:
     name: openshift-gitops-argocd-application-controller
     namespace: openshift-gitops
 roleRef:
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: multiclusterhub-admin
+---
+# (2) QUYỀN NAMESPACE ĐỂ ARGOCD QUẢN LÝ APPLICATION TRONG open-cluster-management
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-manage-ocm-apps
+  namespace: open-cluster-management
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources:
+      - applications
+      - applications/finalizers
+      - appprojects
+      - applicationsets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-manage-ocm-apps
+  namespace: open-cluster-management
+subjects:
+  - kind: ServiceAccount
+    name: openshift-gitops-argocd-application-controller
+    namespace: openshift-gitops
+roleRef:
   apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argocd-manage-ocm-apps
