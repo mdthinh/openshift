@@ -36,12 +36,12 @@ yum install awscli -y
   oc create secret generic config-bundle-secret --from-file=config.yaml=config.yaml -n quay-enterprise
 
 
-  curl -k -X POST https://quay.apps.prod-ocp.mdt.local/api/v1/user/initialize \
+  curl -k -X POST https://quay.apps.prod-ocp.viettechcorp.com.vn/api/v1/user/initialize \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "quayadmin",
+    "username": "admin",
     "password": "Mdt@1311",
-    "email": "admin@prod-ocp.mdt.local"
+    "email": "admin@prod-ocp.viettechcorp.com.vn"
   }'
 
 
